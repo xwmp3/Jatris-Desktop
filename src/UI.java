@@ -42,7 +42,7 @@ public class UI extends JPanel {
      * 11   Speed Up     ]
      * 12   Speed Down   [
      */
-    private static Map<Integer, Integer> keyActionMap = new HashMap<>();
+    private static Map<Integer, Integer> keyActionMap = new HashMap<Integer, Integer>();
 
     static {
         keyActionMap.put(KeyEvent.VK_ENTER, 0);
@@ -66,10 +66,10 @@ public class UI extends JPanel {
     private static Map<Integer, Integer> levelSpeedMap = new HashMap<Integer, Integer>();
 
     static {
-        levelSpeedMap.put(7, 35);
+        levelSpeedMap.put(7, 34);
         levelSpeedMap.put(6, 29);
         levelSpeedMap.put(5, 23);
-        levelSpeedMap.put(4, 17);
+        levelSpeedMap.put(5, 17);
         levelSpeedMap.put(3, 11);
         levelSpeedMap.put(2, 6);
         levelSpeedMap.put(1, 2);
@@ -108,7 +108,7 @@ public class UI extends JPanel {
     }
 
     public void run() {
-        timer.schedule(timerTask, 10, 20);
+        timer.schedule(timerTask, 100, 20);
     }
 
     private void initiate() {

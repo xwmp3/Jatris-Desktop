@@ -307,23 +307,24 @@ public class Tetris {
     }
 
     private boolean holdAction() {
-        System.out.println("[Hold] HoldState :" + holdState + " CurrentHoldType: " + currentHoldType);
+        boolean flag = false;
         if (!holdState) {
             if (currentHoldType == -1) {
                 this.currentHoldType = currentTetro.getTetroType();
                 newTetro();
                 hardDropGenerate();
                 holdState = true;
-                return true;
+                flag = true;
             }
             int temp = this.currentHoldType;
             this.currentHoldType = currentTetro.getTetroType();
             this.currentTetro = new Tetromino(temp);
             hardDropGenerate();
             holdState = true;
-            return true;
+            flag = true;
         }
-        return false;
+        System.out.println("[Hold] HoldState :" + holdState + " CurrentHoldType: " + currentHoldType + " " + flag);
+        return flag;
     }
 
     private void hardDropAction() {
