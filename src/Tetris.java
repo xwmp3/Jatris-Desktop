@@ -72,7 +72,7 @@ public class Tetris {
         score = 0;
         lines = 0;
         pieces = 0;
-        level = 6;
+        level = 7;
         tetroBag = new SevenBag(4);
         newTetro();
         hardDropGenerate();
@@ -151,6 +151,28 @@ public class Tetris {
         return removed;
     }
 
+    private boolean speedUpAction() {
+        boolean flag;
+        if (level > 0) {
+            level--;
+            flag = true;
+        } else {
+            flag = false;
+        }
+        return flag;
+    }
+
+    private boolean speedDownAction() {
+        boolean flag;
+        if (level < 7) {
+            level++;
+            flag = true;
+        } else {
+            flag = false;
+        }
+        return flag;
+    }
+
     private boolean isGameover() {
         for (int i = 0; i < COLS; i++) {
             if (wall[0][i] != -1) {
@@ -173,7 +195,7 @@ public class Tetris {
         newTetro();
         hardDropGenerate();
         holdState = false;
-        if (pieces >= 30 && pieces % 30 == 0 && level > 0)
+        if (pieces >= 30 && pieces % 30 == 0 && level > 1)
             level--;
         if (isGameover()) {
             gameover();
@@ -269,7 +291,7 @@ public class Tetris {
         } else {
             flag = false;
         }
-        System.out.println("[CwSpin Action] " + flag);
+        System.out.println("[CwSpin] " + flag);
         return flag;
     }
 
@@ -285,7 +307,7 @@ public class Tetris {
     }
 
     private boolean holdAction() {
-        System.out.println("[Hold Action] HoldState :" + holdState + " CurrentHoldType: " + currentHoldType);
+        System.out.println("[Hold] HoldState :" + holdState + " CurrentHoldType: " + currentHoldType);
         if (!holdState) {
             if (currentHoldType == -1) {
                 this.currentHoldType = currentTetro.getTetroType();
@@ -323,6 +345,8 @@ public class Tetris {
      *                   8    cwSpin
      *                   9    antiCwSpin
      *                   10   hold
+     *                   11   speedUp
+     *                   12   speedDown
      * @return flag
      * <p>
      * Flag State
@@ -376,6 +400,13 @@ public class Tetris {
                 break;
             case 10:
                 flag = holdAction() ? 6 : 7;
+                break;
+            case 11:
+                flag = speedUpAction() ? 3 : 4;
+                break;
+            case 12:
+                flag = speedDownAction() ? 3 : 4;
+                break;
         }
         if (isBottom(currentTetro)) {
             saveCellsToWall();
