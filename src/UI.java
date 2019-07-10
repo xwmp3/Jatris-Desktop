@@ -39,6 +39,8 @@ public class UI extends JPanel {
      * 8    cwSpin       X | Up
      * 9    antiCwSpin   C | Ctrl
      * 10   hold         Shift
+     * 11   Speed Up     ]
+     * 12   Speed Down   [
      */
     private static Map<Integer, Integer> keyActionMap = new HashMap<Integer, Integer>();
 
@@ -57,19 +59,20 @@ public class UI extends JPanel {
         keyActionMap.put(KeyEvent.VK_C, 9);
         keyActionMap.put(KeyEvent.VK_CONTROL, 9);
         keyActionMap.put(KeyEvent.VK_SHIFT, 10);
-        keyActionMap.put(KeyEvent.VK_E, 11);
+        keyActionMap.put(KeyEvent.VK_CLOSE_BRACKET, 11);
+        keyActionMap.put(KeyEvent.VK_OPEN_BRACKET, 12);
     }
 
     private static Map<Integer, Integer> levelSpeedMap = new HashMap<Integer, Integer>();
 
     static {
-        levelSpeedMap.put(6, 35);
-        levelSpeedMap.put(5, 29);
-        levelSpeedMap.put(4, 23);
-        levelSpeedMap.put(3, 17);
-        levelSpeedMap.put(2, 11);
-        levelSpeedMap.put(1, 6);
-        levelSpeedMap.put(0, 2);
+        levelSpeedMap.put(7, 34);
+        levelSpeedMap.put(6, 29);
+        levelSpeedMap.put(5, 23);
+        levelSpeedMap.put(5, 17);
+        levelSpeedMap.put(3, 11);
+        levelSpeedMap.put(2, 6);
+        levelSpeedMap.put(1, 2);
     }
 
     private KeyListener keyListener = new KeyAdapter() {
@@ -105,7 +108,7 @@ public class UI extends JPanel {
     }
 
     public void run() {
-        timer.schedule(timerTask, 10, 20);
+        timer.schedule(timerTask, 100, 20);
     }
 
     private void initiate() {
@@ -202,9 +205,7 @@ public class UI extends JPanel {
     private void paintHardDrop(Graphics g) {
         int xAdd = 175, yAdd = 25;
         Tetromino tetro = tetris.getHardDropTetro();
-        if (tetro == null) {
-            return;
-        }
+        if (tetro == null) return;
         Cell[] cells = tetro.getCells();
         for (Cell cell : cells) {
             int rows = cell.getRow() * CELL_SIZE + yAdd;
@@ -245,7 +246,7 @@ public class UI extends JPanel {
 
     private void paintScore(Graphics g) {
         int score = tetris.getScore(), level = tetris.getLevel(), lines = tetris.getLines(), pieces = tetris.getPieces();
-        Color color = new Color(255, 255,255);
+        Color color = new Color(255, 255, 255);
         g.setColor(color);
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, 30);
         g.setFont(font);
@@ -269,21 +270,9 @@ public class UI extends JPanel {
     private void paintGameover(Graphics g) {
         g.drawImage(gameoverImage, 0, 0, null);
         Color color = new Color(255, 255, 0);
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN,30);
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
         g.setColor(color);
         g.setFont(font);
         g.drawString(String.valueOf(tetris.getScore()), 340, 342);
-    }
-
-    public static void main(String[] args) {
-        UI ui = new UI();
-        JFrame frame = new JFrame();
-        frame.add(ui);
-        frame.setSize(650, 670);
-        frame.setTitle("Tetris");
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        ui.run();
     }
 }
