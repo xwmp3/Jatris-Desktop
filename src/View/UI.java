@@ -1,3 +1,9 @@
+package View;
+
+import Model.Cell;
+import Model.Tetris;
+import Model.Tetromino;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -69,10 +75,10 @@ public class UI extends JPanel {
         levelSpeedMap.put(7, 34);
         levelSpeedMap.put(6, 29);
         levelSpeedMap.put(5, 23);
-        levelSpeedMap.put(5, 17);
-        levelSpeedMap.put(3, 11);
-        levelSpeedMap.put(2, 6);
-        levelSpeedMap.put(1, 2);
+        levelSpeedMap.put(4, 19);
+        levelSpeedMap.put(3, 15);
+        levelSpeedMap.put(2, 9);
+        levelSpeedMap.put(1, 5);
     }
 
     private KeyListener keyListener = new KeyAdapter() {
@@ -128,17 +134,17 @@ public class UI extends JPanel {
 
     private void imageLoad() {
         try {
-            bgImage = ImageIO.read(UI.class.getResource("background.png"));
-            waitImage = ImageIO.read(UI.class.getResource("start.png"));
+            bgImage = ImageIO.read(UI.class.getResource("/background.png"));
+            waitImage = ImageIO.read(UI.class.getResource("/start.png"));
             for (int i = 0; i < cellImages.length; i++) {
                 cellImages[i] = ImageIO.read(UI.class.getResource("/cellImages/" + i + ".png"));
             }
             for (int i = 0; i < hardDropImages.length; i++) {
                 hardDropImages[i] = ImageIO.read(UI.class.getResource("/hardDropImages/" + i + ".png"));
             }
-            playgroundImage = ImageIO.read(UI.class.getResource("playground.png"));
-            pauseImage = ImageIO.read(UI.class.getResource("pause.png"));
-            gameoverImage = ImageIO.read(UI.class.getResource("gameover.png"));
+            playgroundImage = ImageIO.read(UI.class.getResource("/playground.png"));
+            pauseImage = ImageIO.read(UI.class.getResource("/pause.png"));
+            gameoverImage = ImageIO.read(UI.class.getResource("/gameover.png"));
 
         } catch (IOException e) {
             e.printStackTrace();

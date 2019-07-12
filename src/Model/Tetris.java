@@ -1,3 +1,7 @@
+package Model;
+
+import Algorithm.SevenBag;
+
 public class Tetris {
     private static int ROWS = 20;
     private static int COLS = 10;
@@ -148,17 +152,19 @@ public class Tetris {
                 flag = true;
             }
         }
+        System.out.println("[RemoveLine] " + removed);
         return removed;
     }
 
     private boolean speedUpAction() {
         boolean flag;
-        if (level > 0) {
+        if (level > 1) {
             level--;
             flag = true;
         } else {
             flag = false;
         }
+        System.out.println("[SpeedUp] " + flag);
         return flag;
     }
 
@@ -170,6 +176,7 @@ public class Tetris {
         } else {
             flag = false;
         }
+        System.out.println("[SpeedDown] " + flag);
         return flag;
     }
 
@@ -190,7 +197,7 @@ public class Tetris {
         }
         int temp = removeLine();
         lines += temp;
-        score += temp * 10;
+        scoreCalc(temp);
         pieces++;
         newTetro();
         hardDropGenerate();
@@ -315,13 +322,14 @@ public class Tetris {
                 hardDropGenerate();
                 holdState = true;
                 flag = true;
+            } else {
+                int temp = this.currentHoldType;
+                this.currentHoldType = currentTetro.getTetroType();
+                this.currentTetro = new Tetromino(temp);
+                hardDropGenerate();
+                holdState = true;
+                flag = true;
             }
-            int temp = this.currentHoldType;
-            this.currentHoldType = currentTetro.getTetroType();
-            this.currentTetro = new Tetromino(temp);
-            hardDropGenerate();
-            holdState = true;
-            flag = true;
         }
         System.out.println("[Hold] HoldState :" + holdState + " CurrentHoldType: " + currentHoldType + " " + flag);
         return flag;
@@ -331,6 +339,25 @@ public class Tetris {
         if (hardDropTetro == null)
             return;
         currentTetro = hardDropTetro;
+    }
+
+    private void scoreCalc(int removedLines) {
+        switch (removedLines) {
+            case 1:
+                score += 10;
+                break;
+            case 2:
+                score += 20;
+                break;
+            case 3:
+                score += 40;
+                break;
+            case 4:
+                score += 80;
+                break;
+            default:
+                break;
+        }
     }
 
     /**

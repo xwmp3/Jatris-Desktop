@@ -1,3 +1,5 @@
+package Model;
+
 public class Cell implements Cloneable{
     private int row;
     private int col;

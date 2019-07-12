@@ -1,3 +1,5 @@
+package Model;
+
 public class Tetromino{
     private static int CENTERNO = 2;
     private Cell[] cells = new Cell[4];
