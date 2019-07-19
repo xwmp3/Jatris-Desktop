@@ -5,6 +5,7 @@ public class Tetromino{
     private Cell[] cells = new Cell[4];
     private int tetroType;
 
+    // 方块类的构造函数
     public Tetromino(int _tetroType){
         this.tetroType = _tetroType;
         this.cellsGenerate();
@@ -27,6 +28,7 @@ public class Tetromino{
         return tetroType;
     }
 
+    // 根据指定的方块类型，生成新方块的cells属性
     private void cellsGenerate() {
         int type = this.tetroType;
         switch (type) {
@@ -75,6 +77,7 @@ public class Tetromino{
         }
     }
 
+    // 向下移动
     public void moveDown() {
         if (cells == null) return;
         for (Cell cell : this.cells) {
@@ -82,18 +85,21 @@ public class Tetromino{
         }
     }
 
+    // 向左移动
     public void moveLeft() {
         for (Cell cell : this.cells) {
             cell.moveLeft();
         }
     }
 
+    // 向右移动
     public void moveRight() {
         for (Cell cell : this.cells) {
             cell.moveRight();
         }
     }
 
+    // 顺时针旋转
     public Cell[] cwSpin(){
         if (this.tetroType == 1)
             return null;
@@ -112,6 +118,7 @@ public class Tetromino{
         return tempCells;
     }
 
+    // 逆时针旋转
     public Cell[] antiCwSpin() {
         if (this.tetroType == 1)
             return null;

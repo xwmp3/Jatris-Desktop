@@ -3,7 +3,7 @@ package Model;
 public class Cell implements Cloneable{
     private int row;
     private int col;
-    private int cellType;
+    private int cellType; // 类型
 
     public Cell(int _row, int _col, int _cellType) {
         this.row = _row;
@@ -14,11 +14,6 @@ public class Cell implements Cloneable{
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return (Cell) super.clone();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
     }
 
     public int getRow() {
@@ -45,18 +40,22 @@ public class Cell implements Cloneable{
         this.cellType = cellType;
     }
 
+    // 向下移动
     public void moveDown() {
         this.row++;
     }
 
+    // 向左移动
     public void moveLeft() {
         this.col--;
     }
 
+    // 向右移动
     public void moveRight() {
         this.col++;
     }
 
+    // 顺时针旋转
     public void cwSpin(Cell center) {
         int tempRow = this.row;
         int tempCol = this.col;
@@ -64,6 +63,7 @@ public class Cell implements Cloneable{
         this.col = center.col + center.row - tempRow;
     }
 
+    // 逆时针旋转
     public void antiCwSpin(Cell center) {
         int tempRow = this.row;
         int tempCol = this.col;

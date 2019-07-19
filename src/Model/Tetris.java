@@ -3,22 +3,22 @@ package Model;
 import Algorithm.SevenBag;
 
 public class Tetris {
-    private static int ROWS = 20;
+    private static int ROWS = 20; // 底部方块数组的大小
     private static int COLS = 10;
-    private int[][] wall = new int[ROWS][COLS];
+    private int[][] wall = new int[ROWS][COLS]; // 底部方块数组
 
-    private int state; // 0 --- wait | 1 --- run | 2 --- pause | -1 --- gameover
-    private int score;
-    private int lines;
-    private int pieces;
-    private int level;
+    private int state; // 游戏状态： 0 --- wait | 1 --- run | 2 --- pause | -1 --- gameover
+    private int score; // 得分
+    private int lines; // 已消除行数
+    private int pieces; // 已消除块数
+    private int level; // 下落速度，数字越小越快
 
-    private SevenBag tetroBag;
-    private Tetromino currentTetro;
-    private int[] nextTetrosType = new int[4];
-    private Tetromino hardDropTetro;
-    private int currentHoldType;
-    private boolean holdState;
+    private SevenBag tetroBag; // 生成新方块的算法实例
+    private Tetromino currentTetro; // 当前方块
+    private int[] nextTetrosType = new int[4]; // 预览方块类型序列
+    private Tetromino hardDropTetro; // 当前方块的硬降预览方块
+    private int currentHoldType; // 当前Hold槽中的方块类型（-1代表为空）
+    private boolean holdState; // Hold状态（true已Hold，false未Hold）
 
     public Tetris() {
         initiate();
@@ -68,6 +68,7 @@ public class Tetris {
         return wall;
     }
 
+    // 初始化游戏数据
     private void initiate() {
         for (int i = 0; i < ROWS; i++)
             for (int j = 0; j < COLS; j++)
@@ -104,6 +105,7 @@ public class Tetris {
         this.state = -1;
     }
 
+    // 获取新的当前方块和预览方块序列
     private void newTetro() {
         int[] tempTypeInt = tetroBag.newNextPieces();
         for (int i = 0; i < tempTypeInt.length; i++) {
@@ -115,6 +117,7 @@ public class Tetris {
         }
     }
 
+    // 根据当前方块的状态，生成当前方块的硬降预览方块
     private void hardDropGenerate() {
         Cell[] tempCells = new Cell[4];
         Cell[] cells = currentTetro.getCells();
@@ -129,6 +132,7 @@ public class Tetris {
         hardDropTetro = tempTetro;
     }
 
+    // 扫描底部方块数组，自动消行，返回消除的行数
     private int removeLine() {
         int removed = 0;
         boolean flag = true;
@@ -152,10 +156,10 @@ public class Tetris {
                 flag = true;
             }
         }
-        System.out.println("[RemoveLine] " + removed);
         return removed;
     }
 
+    // 加快下落速度
     private boolean speedUpAction() {
         boolean flag;
         if (level > 1) {
@@ -164,10 +168,10 @@ public class Tetris {
         } else {
             flag = false;
         }
-        System.out.println("[SpeedUp] " + flag);
         return flag;
     }
 
+    // 减慢下落速度
     private boolean speedDownAction() {
         boolean flag;
         if (level < 7) {
@@ -176,10 +180,10 @@ public class Tetris {
         } else {
             flag = false;
         }
-        System.out.println("[SpeedDown] " + flag);
         return flag;
     }
 
+    // 检测游戏是否结束
     private boolean isGameover() {
         for (int i = 0; i < COLS; i++) {
             if (wall[0][i] != -1) {
@@ -189,6 +193,7 @@ public class Tetris {
         return false;
     }
 
+    // 将当前方块存入底部方块数组
     private void saveCellsToWall() {
         for (Cell cell : currentTetro.getCells()) {
             int row = cell.getRow();
@@ -209,6 +214,7 @@ public class Tetris {
         }
     }
 
+    // 检测当前方块是否触底
     private boolean isBottom(Tetromino tetro) {
         Cell[] cells = tetro.getCells();
         if (cells == null) return false;
@@ -222,6 +228,7 @@ public class Tetris {
         return false;
     }
 
+    // 检测当前方块是否能够左移
     private boolean canLeftMove() {
         Cell[] cells = currentTetro.getCells();
         if (cells == null) return false;
@@ -234,6 +241,7 @@ public class Tetris {
         return true;
     }
 
+    // 检测当前方块是否能够右移
     private boolean canRightMove() {
         Cell[] cells = currentTetro.getCells();
         if (cells == null) {
@@ -248,6 +256,7 @@ public class Tetris {
         return true;
     }
 
+    // 检测当前方块是否能够旋转
     private boolean canSpin(Cell[] tempCells) {
         if (tempCells == null)
             return false;
@@ -262,6 +271,7 @@ public class Tetris {
         return true;
     }
 
+    // 当前方块左移
     private boolean moveLeftAction() {
         if (canLeftMove() && !isBottom(currentTetro)) {
             currentTetro.moveLeft();
@@ -271,6 +281,7 @@ public class Tetris {
         return false;
     }
 
+    // 当前方块右移
     private boolean moveRightAction() {
         if (canRightMove() && !isBottom(currentTetro)) {
             currentTetro.moveRight();
@@ -280,6 +291,7 @@ public class Tetris {
         return false;
     }
 
+    // 当前方块下移
     private boolean moveDownAction() {
         if (!isBottom(currentTetro)) {
             currentTetro.moveDown();
@@ -288,6 +300,7 @@ public class Tetris {
         return false;
     }
 
+    // 当前方块顺时针旋转
     private boolean cwSpinAction() {
         boolean flag;
         Cell[] tempCells = currentTetro.cwSpin();
@@ -298,10 +311,10 @@ public class Tetris {
         } else {
             flag = false;
         }
-        System.out.println("[CwSpin] " + flag);
         return flag;
     }
 
+    // 当前方块逆时针旋转
     private boolean antiCwSpinAction() {
         Cell[] tempCells = currentTetro.antiCwSpin();
         if (canSpin(tempCells)) {
@@ -313,6 +326,7 @@ public class Tetris {
         }
     }
 
+    // Hold操作
     private boolean holdAction() {
         boolean flag = false;
         if (!holdState) {
@@ -331,16 +345,17 @@ public class Tetris {
                 flag = true;
             }
         }
-        System.out.println("[Hold] HoldState :" + holdState + " CurrentHoldType: " + currentHoldType + " " + flag);
         return flag;
     }
 
+    // 当前方块硬降
     private void hardDropAction() {
         if (hardDropTetro == null)
             return;
         currentTetro = hardDropTetro;
     }
 
+    // 计算游戏分数
     private void scoreCalc(int removedLines) {
         switch (removedLines) {
             case 1:
@@ -361,6 +376,7 @@ public class Tetris {
     }
 
     /**
+     * 根据输入的actionType，执行对应的action
      * @param actionType Type Action
      *                   0    start
      *                   1    pause
@@ -436,6 +452,7 @@ public class Tetris {
                 flag = speedDownAction() ? 3 : 4;
                 break;
         }
+        // 当方块触底，把方块存到底部方块数组
         if (isBottom(currentTetro)) {
             saveCellsToWall();
         }

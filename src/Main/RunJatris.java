@@ -5,6 +5,11 @@ import View.UI;
 import javax.swing.*;
 
 public class RunJatris {
+    /**
+     * 程序入口
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         UI ui = new UI();
         JFrame frame = new JFrame();

@@ -18,10 +18,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class UI extends JPanel {
-    private static int CELL_SIZE = 30;
-    private static int ROWS = 20;
+    private static int CELL_SIZE = 30; // cell图片的像素大小
+    private static int ROWS = 20; // 底部方块数组的大小
     private static int COLS = 10;
 
+    // 界面的图片资源缓存
     private BufferedImage bgImage;
     private BufferedImage playgroundImage;
     private BufferedImage waitImage;
@@ -30,9 +31,11 @@ public class UI extends JPanel {
     private BufferedImage[] cellImages = new BufferedImage[7];
     private BufferedImage[] hardDropImages = new BufferedImage[7];
 
+    // 游戏逻辑类
     private Tetris tetris = new Tetris();
 
     /**
+     * 将键盘输入转换为actionType
      * Type Action       Key
      * 0    start        Enter
      * 1    pause        ESC | F1
@@ -69,6 +72,7 @@ public class UI extends JPanel {
         keyActionMap.put(KeyEvent.VK_OPEN_BRACKET, 12);
     }
 
+    // 将level转换为速度
     private static Map<Integer, Integer> levelSpeedMap = new HashMap<Integer, Integer>();
 
     static {
@@ -81,6 +85,7 @@ public class UI extends JPanel {
         levelSpeedMap.put(1, 5);
     }
 
+    // 按键事件监听器
     private KeyListener keyListener = new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
@@ -90,6 +95,7 @@ public class UI extends JPanel {
         }
     };
 
+    // 设置定时任务
     private Timer timer = new Timer();
     private TimerTask timerTask = new TimerTask() {
         int moveIndex = -1;
@@ -113,10 +119,12 @@ public class UI extends JPanel {
         initiate();
     }
 
+    // 开始游戏运行
     public void run() {
         timer.schedule(timerTask, 100, 20);
     }
 
+    // 初始化界面资源
     private void initiate() {
         imageLoad();
         this.addKeyListener(keyListener);
@@ -124,6 +132,7 @@ public class UI extends JPanel {
         this.requestFocus();
     }
 
+    // 将键盘输入转换为actionType
     private int keyToAction(int keyCode) {
         int flag = -1;
         if (tetris == null || keyActionMap.get(keyCode) == null)
@@ -132,6 +141,7 @@ public class UI extends JPanel {
         return flag;
     }
 
+    // 加载界面中的图片资源
     private void imageLoad() {
         try {
             bgImage = ImageIO.read(UI.class.getResource("/background.png"));
@@ -151,6 +161,7 @@ public class UI extends JPanel {
         }
     }
 
+    // 绘制界面
     public void paint(Graphics g) {
         if (tetris.getState() == 1) {
             paintImages(g);
@@ -256,13 +267,13 @@ public class UI extends JPanel {
         g.setColor(color);
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, 30);
         g.setFont(font);
-        g.drawString(String.valueOf(score), 50, 170);
-        g.drawString("SCORE", 30, 200);
-        g.drawString("LEVEL " + level, 20, 270);
-        g.drawString(String.valueOf(pieces), 50, 350);
-        g.drawString("PIECES", 25, 400);
-        g.drawString(String.valueOf(lines), 50, 450);
-        g.drawString("LINES", 30, 500);
+        g.drawString(String.valueOf(score), 60, 170);
+        g.drawString("SCORE", 35, 220);
+        g.drawString("LEVEL " + level, 20, 300);
+        g.drawString(String.valueOf(pieces), 60, 370);
+        g.drawString("PIECEs", 25, 420);
+        g.drawString(String.valueOf(lines), 60, 470);
+        g.drawString("LINEs", 30, 520);
     }
 
     private void paintWait(Graphics g) {
